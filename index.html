@@ -1,0 +1,29 @@
+<html>
+<head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+<script>
+$.get('http://ipinfo.io/ip',function(data) {
+  var ip=data;
+  console.log(ip);
+  $.get('http://ipinfo.io/'+ip+'/json',function(data) {
+		var city=data['city'];
+		var loc=data['loc'];
+		var region=data['region'];
+		lat=loc.split(',')[0];
+		lon=loc.split(',')[1];
+		$('body').append(' '+city+' '+region+' '+lat+' '+lon);
+		$.get('http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&callback=?&units=metric',function(data) {
+			var temp=data['main']['temp'];
+			var weather=data['weather'][0]['main'];
+			$('body').append(' '+temp+' '+weather);
+		},'json');
+	},'json');
+	});
+</script>
+
+
+
+</body>
+</html>
